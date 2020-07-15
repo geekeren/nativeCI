@@ -1,11 +1,13 @@
-name: golang
+name: nodejs
 stages:
   - name: Build
     steps:
       - name: install dependencies
-        run: go install
+        run: yarn install
+      - name: test
+        run: yarn test
       - name: build app
-        run: go build -o ./build/nativeCI
+        run: yarn build
   - name: Publish
     steps:
       - name: Push to Docker Registry

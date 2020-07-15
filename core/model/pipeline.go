@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"strconv"
 	str "strings"
 )
 
@@ -30,11 +31,11 @@ func (pipeline *Pipeline) LoadConf(configFile string) *Pipeline {
 
 func (pipeline *Pipeline) Run() {
 	os.Mkdir("./.tmp", os.FileMode(0755))
-	for _, stage := range pipeline.Stages {
+	for stageIndex, stage := range pipeline.Stages {
 		log.Printf("Stage: %s", stage.Name)
 
-		for _, step := range stage.Steps {
-			script := "./.tmp/" + str.ReplaceAll(step.Name, " ", "_") + ".sh"
+		for stepIndex, step := range stage.Steps {
+			script := ".tmp/" + strconv.Itoa(stageIndex) + "_" + strconv.Itoa(stepIndex) + "_" + str.ReplaceAll(step.Name, " ", "_") + ".sh"
 			err := ioutil.WriteFile(script, []byte(step.Run), 0755)
 			if err != nil {
 				log.Printf("Unable to write file: %v", err)

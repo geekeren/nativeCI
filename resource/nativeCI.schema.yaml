@@ -1,0 +1,38 @@
+libirary: https://dddd
+variables:
+  projectName: dddd
+---
+name: nodejs
+runOn:
+  vm: ubuntu
+  container: node:12
+    dockerfile: ./agent/dockerfile
+context: common
+stages:
+  - name: Build
+    context:
+    steps:
+      - name: install dependencies
+        command: yarn install
+        env:
+          cache: true
+      - name: test
+        command: yarn test
+      - name: build app
+        command: yarn build
+  - name: Publish
+    steps:
+      - name: Push to Docker Registry
+        runOn:
+          container: aws/ecr-pusher
+        command: echo push to docker registry
+  - name: Deploy to Dev
+    context: dev
+    steps:
+      - name: deploy to k8s
+        command: echo kubectl
+  - name: Deploy to QA
+    context: qa
+    steps:
+      - name: deploy to k8s
+        command: echo kubectl

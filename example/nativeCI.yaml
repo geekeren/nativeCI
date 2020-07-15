@@ -1,0 +1,18 @@
+name: nodejs
+stages:
+  - name: Build
+    steps:
+      - name: install dependencies
+        run: yarn install
+      - name: test
+        run: yarn test
+      - name: build app
+        run: yarn build
+  - name: Publish
+    steps:
+      - name: Push to Docker Registry
+        run: echo push to docker registry
+  - name: Deploy
+    steps:
+      - name: deploy to k8s
+        run: echo kubectl
